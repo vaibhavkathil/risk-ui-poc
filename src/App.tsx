@@ -2,19 +2,26 @@ import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink, Navigate } from 'react-router-dom';
 import { AppProvider } from './AppContext';
 import { Dashboard } from './pages/Dashboard';
+import { RODAnalytics } from './pages/RODAnalytics';
 import { RunsList } from './pages/RunsList';
 import { RunDetails } from './pages/RunDetails';
 import { RiskAnalysis } from './pages/RiskAnalysis';
 import { DebugDetail } from './pages/DebugDetail';
+import { AdminConfig } from './pages/AdminConfig';
+import { RecordDetail } from './pages/RecordDetail';
+import { AuditLogs } from './pages/AuditLogs';
+import { Architecture } from './pages/Architecture';
 import { 
   LayoutDashboard, 
-  PlaySquare, 
-  Search, 
+  Settings,
+  FileText,
+  PlaySquare,
+  Search,
+  TrendingUp,
+  Cpu,
   Menu, 
   X, 
-  ShieldCheck,
-  TrendingUp,
-  Settings
+  ShieldCheck
 } from 'lucide-react';
 
 function AppContent() {
@@ -66,7 +73,7 @@ function AppContent() {
         `}} />
 
         {/* Navigation Sidebar */}
-        <aside className={`sidebar ${mobileMenuOpen ? 'open' : ''}`}>
+        <aside className={`sidebar ${mobileMenuOpen ? 'open' : ''}`} style={{ overflowY: 'auto' }}>
           <div className="sidebar-logo">
             <div className="logo-icon">
               <ShieldCheck size={20} />
@@ -74,23 +81,69 @@ function AppContent() {
             <span className="logo-text">RiskEngine</span>
           </div>
 
-          <nav className="sidebar-nav">
+          <nav className="sidebar-nav" style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+            {/* KYC Risk Engine Section */}
+            <div style={{
+              fontSize: '0.65rem',
+              fontWeight: 700,
+              color: 'var(--text-muted)',
+              textTransform: 'uppercase',
+              letterSpacing: '1px',
+              marginTop: '0.5rem',
+              marginBottom: '0.25rem',
+              paddingLeft: '1rem'
+            }}>
+              KYC Risk Engine
+            </div>
+
             <NavLink 
               to="/" 
               className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
               onClick={() => setMobileMenuOpen(false)}
             >
-              <LayoutDashboard />
-              <span>Dashboard</span>
+              <LayoutDashboard size={18} />
+              <span>KYC Dashboard</span>
             </NavLink>
 
             <NavLink 
-              to="/analysis" 
+              to="/admin" 
               className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
               onClick={() => setMobileMenuOpen(false)}
             >
-              <Search />
-              <span>Risk Analysis</span>
+              <Settings size={18} />
+              <span>Admin Config</span>
+            </NavLink>
+
+            <NavLink 
+              to="/logs" 
+              className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <FileText size={18} />
+              <span>Audit Logs</span>
+            </NavLink>
+
+            {/* Risk On Demand Section */}
+            <div style={{
+              fontSize: '0.65rem',
+              fontWeight: 700,
+              color: 'var(--text-muted)',
+              textTransform: 'uppercase',
+              letterSpacing: '1px',
+              marginTop: '1.5rem',
+              marginBottom: '0.25rem',
+              paddingLeft: '1rem'
+            }}>
+              Risk On Demand
+            </div>
+
+            <NavLink 
+              to="/rod-analytics" 
+              className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <TrendingUp size={18} />
+              <span>ROD Analytics</span>
             </NavLink>
 
             <NavLink 
@@ -98,36 +151,34 @@ function AppContent() {
               className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
               onClick={() => setMobileMenuOpen(false)}
             >
-              <PlaySquare />
+              <PlaySquare size={18} />
               <span>Pipelines</span>
             </NavLink>
 
             <NavLink 
-              to="/reporting" 
+              to="/analysis" 
               className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
               onClick={() => setMobileMenuOpen(false)}
-              style={{ opacity: 0.5, cursor: 'not-allowed' }}
             >
-              <TrendingUp />
-              <span>Reporting</span>
+              <Search size={18} />
+              <span>Risk Analysis</span>
             </NavLink>
 
             <NavLink 
-              to="/settings" 
+              to="/architecture" 
               className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
               onClick={() => setMobileMenuOpen(false)}
-              style={{ opacity: 0.5, cursor: 'not-allowed' }}
             >
-              <Settings />
-              <span>Settings</span>
+              <Cpu size={18} />
+              <span>AI Agent Network</span>
             </NavLink>
           </nav>
 
-          <div className="sidebar-footer">
-            <div className="avatar">SJ</div>
+          <div className="sidebar-footer" style={{ marginTop: '2rem' }}>
+            <div className="avatar" style={{ backgroundColor: 'var(--color-brand)' }}>SH</div>
             <div className="user-info">
-              <span className="user-name">Sarah Jenkins</span>
-              <span className="user-role">Compliance Director</span>
+              <span className="user-name">S. Henderson</span>
+              <span className="user-role">Senior KYC Analyst</span>
             </div>
           </div>
         </aside>
@@ -135,11 +186,20 @@ function AppContent() {
         {/* Main Content Area */}
         <main className="main-content">
           <Routes>
+            {/* KYC Risk Engine Routes */}
             <Route path="/" element={<Dashboard />} />
+            <Route path="/admin" element={<AdminConfig />} />
+            <Route path="/logs" element={<AuditLogs />} />
+            <Route path="/record/:id" element={<RecordDetail />} />
+
+            {/* Risk On Demand Routes */}
+            <Route path="/rod-analytics" element={<RODAnalytics />} />
             <Route path="/runs" element={<RunsList />} />
             <Route path="/runs/:id" element={<RunDetails />} />
             <Route path="/analysis" element={<RiskAnalysis />} />
             <Route path="/debug/:id" element={<DebugDetail />} />
+            <Route path="/architecture" element={<Architecture />} />
+
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>

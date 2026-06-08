@@ -292,3 +292,240 @@ export const initialRecords: AnalyzedRecord[] = [
     }, null, 2)
   }
 ];
+
+export interface ExecutedRule {
+  id: string;
+  name: string;
+  status: 'FAILED' | 'CRITICAL' | 'PASSED';
+  category: string;
+  duration: string;
+}
+
+export interface TimelineEvent {
+  time: string;
+  title: string;
+  description: string;
+}
+
+export interface TransactionRecord {
+  id: string;
+  entityName: string;
+  category: 'Retail' | 'Corporate' | 'FI';
+  riskRating: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
+  score: number; // e.g. 0.92
+  status: 'Flagged' | 'Approved' | 'Denied';
+  duration: string; // e.g. '45ms'
+  processedAt: string; // ISO date string
+  submittedAgo: string; // e.g. '15 mins ago'
+  flags: string[]; // e.g. ['PEP/SANCTIONS MATCH', 'CRITICAL RISK']
+  rules: ExecutedRule[];
+  timeline: TimelineEvent[];
+  inputPayload: string;
+  outputPayload: string;
+}
+
+export interface StageConfig {
+  id: string;
+  name: string;
+  isActive: boolean;
+}
+
+export interface RuleActivation {
+  id: string;
+  name: string;
+  type: 'JSON' | 'DB' | 'AI' | 'API';
+  isActive: boolean;
+  stageId: string;
+}
+
+// Initial Transaction Records
+export const initialTransactions: TransactionRecord[] = [
+  {
+    id: "T-9034-A",
+    entityName: "Investigation: Corporate Liquidity Sweep",
+    category: "Corporate",
+    riskRating: "CRITICAL",
+    score: 0.92,
+    status: "Flagged",
+    duration: "45ms",
+    processedAt: "2026-06-08T11:30:00Z",
+    submittedAgo: "15 mins ago",
+    flags: ["PEP/SANCTIONS MATCH", "CRITICAL RISK"],
+    rules: [
+      { id: "FL-0121", name: "Jurisdiction Risk: Russia check", status: "FAILED", category: "Compliance", duration: "22.4ms" },
+      { id: "FL-0212", name: "AML Entity: Sanction Match", status: "CRITICAL", category: "Screening", duration: "12.0ms" },
+      { id: "FL-0331", name: "Aggregate Daily Limit validation", status: "PASSED", category: "Limit", duration: "5.0ms" }
+    ],
+    timeline: [
+      { time: "10:45:00 UTC", title: "Analysis Started", description: "System triggered automated elements (API gateway)." },
+      { time: "10:45:05 UTC", title: "Alert Warning Generated", description: "Sanctions Screening returned potential match on Beneficiary entity." },
+      { time: "10:46:12 UTC", title: "Assigned to S. Henderson", description: "Workflow engine moved record to manual review queue." }
+    ],
+    inputPayload: JSON.stringify({
+      transaction_id: "T-9034-A",
+      amount: 4500000.00,
+      currency: "EUR",
+      beneficiary: {
+        name: "GLOBAL LOGISTICS LTD",
+        jurisdiction: "RU"
+      },
+      metadata: {
+        origin_ip: "185.112.2.43",
+        client_type: "corporate"
+      }
+    }, null, 2),
+    outputPayload: JSON.stringify({
+      score: 0.92,
+      recommended_verdict: "FLAGGED_FOR_MANUAL_REVIEW",
+      triggered_rules: [
+        "JURISDICTION_RUSSIA_CHECK",
+        "AML_SANCTION_MATCH"
+      ]
+    }, null, 2)
+  },
+  {
+    id: "T-9034-B",
+    entityName: "Marcus Aurelius Vance",
+    category: "FI",
+    riskRating: "HIGH",
+    score: 0.78,
+    status: "Flagged",
+    duration: "65ms",
+    processedAt: "2026-06-08T10:15:00Z",
+    submittedAgo: "1 hour ago",
+    flags: ["HIGH VALUE VOLATILITY", "PEPEP MATCH"],
+    rules: [
+      { id: "FL-0112", name: "High Net Worth volume screening", status: "FAILED", category: "Limit", duration: "35.2ms" },
+      { id: "FL-0221", name: "PEP Watchlist screening match", status: "FAILED", category: "Screening", duration: "18.4ms" },
+      { id: "FL-0442", name: "Biometric Liveness Verification", status: "PASSED", category: "Identity", duration: "8.2ms" }
+    ],
+    timeline: [
+      { time: "09:15:00 UTC", title: "Analysis Started", description: "Triggered standard HNW evaluation checks." },
+      { time: "09:15:15 UTC", title: "PEP Flag Triggered", description: "Direct PEP hit found on database search." }
+    ],
+    inputPayload: JSON.stringify({
+      transaction_id: "T-9034-B",
+      amount: 1250000.00,
+      currency: "USD",
+      originator: {
+        name: "Marcus Aurelius Vance",
+        jurisdiction: "CYM"
+      }
+    }, null, 2),
+    outputPayload: JSON.stringify({
+      score: 0.78,
+      recommended_verdict: "FLAGGED",
+      triggered_rules: [
+        "HNW_VOLUME_SCREENING",
+        "PEP_WATCHLIST"
+      ]
+    }, null, 2)
+  },
+  {
+    id: "T-9034-C",
+    entityName: "Yuki Tanaka",
+    category: "Retail",
+    riskRating: "LOW",
+    score: 0.15,
+    status: "Approved",
+    duration: "25ms",
+    processedAt: "2026-06-08T09:40:00Z",
+    submittedAgo: "2 hours ago",
+    flags: [],
+    rules: [
+      { id: "FL-0101", name: "Basic Identity scan check", status: "PASSED", category: "Identity", duration: "12.0ms" },
+      { id: "FL-0321", name: "Sanctions list verification", status: "PASSED", category: "Screening", duration: "11.2ms" }
+    ],
+    timeline: [
+      { time: "09:39:00 UTC", title: "Analysis Started", description: "Automated processing checks initiated." },
+      { time: "09:40:00 UTC", title: "System Approved", description: "No checks triggered. Case resolved automatically." }
+    ],
+    inputPayload: JSON.stringify({
+      transaction_id: "T-9034-C",
+      amount: 15000.00,
+      currency: "JPY",
+      originator: {
+        name: "Yuki Tanaka",
+        jurisdiction: "JPN"
+      }
+    }, null, 2),
+    outputPayload: JSON.stringify({
+      score: 0.15,
+      recommended_verdict: "APPROVED",
+      triggered_rules: []
+    }, null, 2)
+  },
+  {
+    id: "T-9034-D",
+    entityName: "Carlos Mendoza",
+    category: "Corporate",
+    riskRating: "CRITICAL",
+    score: 0.95,
+    status: "Denied",
+    duration: "112ms",
+    processedAt: "2026-06-07T14:20:00Z",
+    submittedAgo: "1 day ago",
+    flags: ["SANCTIONS SEVERE MATCH", "PO BOX VIOLATION"],
+    rules: [
+      { id: "FL-0105", name: "Sanctions Database strict check", status: "CRITICAL", category: "Screening", duration: "68.2ms" },
+      { id: "FL-0402", name: "PO Box address constraint", status: "FAILED", category: "Compliance", duration: "32.0ms" }
+    ],
+    timeline: [
+      { time: "14:18:00 UTC", title: "Analysis Started", description: "Batch evaluation started." },
+      { time: "14:20:00 UTC", title: "Automatic Reject", description: "Severe sanctions match triggered block." }
+    ],
+    inputPayload: JSON.stringify({
+      transaction_id: "T-9034-D",
+      amount: 950000.00,
+      currency: "COP",
+      originator: {
+        name: "Carlos Mendoza",
+        address: "P.O. Box 4839, Bogota"
+      }
+    }, null, 2),
+    outputPayload: JSON.stringify({
+      score: 0.95,
+      recommended_verdict: "DENIED",
+      triggered_rules: [
+        "SANCTIONS_SEVERE_MATCH",
+        "PO_BOX_VIOLATION"
+      ]
+    }, null, 2)
+  }
+];
+
+// Initial Stages Config (1 to 12)
+export const initialStages: StageConfig[] = [
+  { id: "stg-1", name: "1. Identity Check", isActive: true },
+  { id: "stg-2", name: "2. Document OCR", isActive: true },
+  { id: "stg-3", name: "3. Biometric Match", isActive: true },
+  { id: "stg-4", name: "4. Sanction Screening", isActive: true },
+  { id: "stg-5", name: "5. PEP Validation", isActive: true },
+  { id: "stg-6", name: "6. Adverse Media", isActive: false },
+  { id: "stg-7", name: "7. Geolocation Risk", isActive: true },
+  { id: "stg-8", name: "8. Velocity Check", isActive: true },
+  { id: "stg-9", name: "9. Source of Funds", isActive: false },
+  { id: "stg-10", name: "10. Transaction Flow", isActive: true },
+  { id: "stg-11", name: "11. Compliance Audit", isActive: true },
+  { id: "stg-12", name: "12. Final Approval", isActive: true }
+];
+
+// Initial Rule Activations grouped by stages
+export const initialRuleActivations: RuleActivation[] = [
+  // Stage 1: Identity Checks
+  { id: "ID-001", name: "Syntax Regex Validation", type: "JSON", isActive: true, stageId: "stg-1" },
+  { id: "ID-002", name: "Duplicate Email Check", type: "DB", isActive: true, stageId: "stg-1" },
+  
+  // Stage 3: Biometric Match
+  { id: "BIO-01", name: "Facial Liveness Detection", type: "AI", isActive: true, stageId: "stg-3" },
+  { id: "BIO-02", name: "Template Signature Analysis", type: "AI", isActive: false, stageId: "stg-3" },
+  
+  // Stage 4: Sanction Screening
+  { id: "SANC-01", name: "OFAC SDN Match", type: "API", isActive: true, stageId: "stg-4" },
+  { id: "SANC-02", name: "EU Consolidated List Check", type: "API", isActive: true, stageId: "stg-4" },
+  { id: "SANC-03", name: "Interpol Notice Verification", type: "API", isActive: false, stageId: "stg-4" },
+  
+  // Stage 7: Geolocation Risk
+  { id: "GEO-01", name: "Russia Ingress Check", type: "API", isActive: true, stageId: "stg-7" },
+  { id: "GEO-02", name: "Sanctioned Countries Inbound", type: "JSON", isActive: true, stageId: "stg-7" }
+];
