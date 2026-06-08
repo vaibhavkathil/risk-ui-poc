@@ -164,6 +164,20 @@ function AppContent() {
               <span>Risk Analysis</span>
             </NavLink>
 
+            {/* System Design Section */}
+            <div style={{
+              fontSize: '0.65rem',
+              fontWeight: 700,
+              color: 'var(--text-muted)',
+              textTransform: 'uppercase',
+              letterSpacing: '1px',
+              marginTop: '1.5rem',
+              marginBottom: '0.25rem',
+              paddingLeft: '1rem'
+            }}>
+              System Design
+            </div>
+
             <NavLink 
               to="/architecture" 
               className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
