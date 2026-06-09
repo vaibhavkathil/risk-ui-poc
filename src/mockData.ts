@@ -507,7 +507,7 @@ export const initialStages: StageConfig[] = [
   { id: "stg-6", name: "6. ConvertPointValueStage", isActive: true, isMandatory: false, rulesCount: 21, responsibility: "Field-to-point-value lookups" },
   { id: "stg-7", name: "7. DefaultPointValueStage", isActive: true, isMandatory: false, rulesCount: 12, responsibility: "Category-specific defaults" },
   { id: "stg-8", name: "8. ApplyRiskModelStage", isActive: true, isMandatory: true, rulesCount: 7, responsibility: "5 risk models via Strategy pattern" },
-  { id: "stg-9", name: "9. ModelRatingStage", isActive: true, isMandatory: false, rulesCount: 24, responsibility: "Score-to-rating + 18 override chain" }
+  { id: "stg-9", name: "9. ModelRatingStage", isActive: true, isMandatory: true, rulesCount: 24, responsibility: "Score-to-rating + 18 override chain" }
 ];
 
 // Initial Rule Activations grouped by stages
