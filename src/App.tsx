@@ -117,6 +117,15 @@ function AppContent() {
             </NavLink>
 
             <NavLink 
+              to="/analysis" 
+              className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <Search size={18} />
+              <span>Risk Analysis</span>
+            </NavLink>
+
+            <NavLink 
               to="/logs" 
               className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
               onClick={() => setMobileMenuOpen(false)}
@@ -155,15 +164,6 @@ function AppContent() {
             >
               <PlaySquare size={18} />
               <span>Pipelines</span>
-            </NavLink>
-
-            <NavLink 
-              to="/analysis" 
-              className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <Search size={18} />
-              <span>Risk Analysis</span>
             </NavLink>
 
             {/* System Design Section */}
