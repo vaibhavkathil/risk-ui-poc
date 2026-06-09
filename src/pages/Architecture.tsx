@@ -131,7 +131,7 @@ export const Architecture: React.FC = () => {
     },
     rod: {
       id: 'rod',
-      name: 'Risk On Demand (ROD) Agent',
+      name: 'Risk Batch Agent',
       category: 'core',
       icon: <Zap size={16} />,
       shortDesc: 'Real-time onboarding checks.',
@@ -143,7 +143,7 @@ export const Architecture: React.FC = () => {
     },
     kyc_verifier: {
       id: 'kyc_verifier',
-      name: 'KYC Verification Agent',
+      name: 'Data Quality & Analytics Agent',
       category: 'core',
       icon: <ShieldCheck size={16} />,
       shortDesc: 'OCR & Biometric verification.',
@@ -225,12 +225,12 @@ export const Architecture: React.FC = () => {
     {
       step: 3,
       activeNodes: ['kyc_verifier', 'knowledge'],
-      log: '🆔 Dispatching sub-task to KYC Verification Agent. Querying Vector Database for Russia-related screening rules... Passport OCR verification passed (100% liveness match).'
+      log: '🆔 Dispatching sub-task to Data Quality & Analytics Agent. Querying Vector Database for Russia-related screening rules... Passport OCR verification passed (100% liveness match).'
     },
     {
       step: 4,
       activeNodes: ['rod'],
-      log: '⚡ ROD Agent invoked for real-time validation... Running fast-cache screening. WARNING: Beneficiary entity matched OFAC Sanctions database registry list.'
+      log: '⚡ Risk Batch Agent invoked for batch validation... Running fast-cache screening. WARNING: Beneficiary entity matched OFAC Sanctions database registry list.'
     },
     {
       step: 5,
@@ -652,7 +652,7 @@ export const Architecture: React.FC = () => {
               >
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.4rem', textAlign: 'center' }}>
                   <div style={{ color: nodes.rod.color }}>{nodes.rod.icon}</div>
-                  <span style={{ fontSize: '0.75rem', fontWeight: 600 }}>Risk On Demand</span>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 600 }}>Risk Batch</span>
                 </div>
                 {isSimulating && simulationStep === 4 && (
                   <span className="pulse-indicator pulsing" style={{ '--active-color': '#ef4444' } as React.CSSProperties} />
@@ -671,7 +671,7 @@ export const Architecture: React.FC = () => {
               >
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.4rem', textAlign: 'center' }}>
                   <div style={{ color: nodes.kyc_verifier.color }}>{nodes.kyc_verifier.icon}</div>
-                  <span style={{ fontSize: '0.75rem', fontWeight: 600 }}>KYC Verifier</span>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 600 }}>Data Quality & Analytics</span>
                 </div>
                 {isSimulating && simulationStep === 3 && (
                   <span className="pulse-indicator pulsing" style={{ '--active-color': nodes.kyc_verifier.color } as React.CSSProperties} />
