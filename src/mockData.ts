@@ -328,6 +328,9 @@ export interface StageConfig {
   id: string;
   name: string;
   isActive: boolean;
+  isMandatory: boolean;
+  rulesCount: number;
+  responsibility: string;
 }
 
 export interface RuleActivation {
@@ -494,38 +497,47 @@ export const initialTransactions: TransactionRecord[] = [
   }
 ];
 
-// Initial Stages Config (1 to 12)
+// Initial Stages Config (1 to 9)
 export const initialStages: StageConfig[] = [
-  { id: "stg-1", name: "1. Identity Check", isActive: true },
-  { id: "stg-2", name: "2. Document OCR", isActive: true },
-  { id: "stg-3", name: "3. Biometric Match", isActive: true },
-  { id: "stg-4", name: "4. Sanction Screening", isActive: true },
-  { id: "stg-5", name: "5. PEP Validation", isActive: true },
-  { id: "stg-6", name: "6. Adverse Media", isActive: false },
-  { id: "stg-7", name: "7. Geolocation Risk", isActive: true },
-  { id: "stg-8", name: "8. Velocity Check", isActive: true },
-  { id: "stg-9", name: "9. Source of Funds", isActive: false },
-  { id: "stg-10", name: "10. Transaction Flow", isActive: true },
-  { id: "stg-11", name: "11. Compliance Audit", isActive: true },
-  { id: "stg-12", name: "12. Final Approval", isActive: true }
+  { id: "stg-1", name: "1. InitialSetupStage", isActive: true, isMandatory: false, rulesCount: 17, responsibility: "Normalize inputs, ~200+ field init" },
+  { id: "stg-2", name: "2. HracIndicatorStage", isActive: true, isMandatory: false, rulesCount: 58, responsibility: "HRAC indicator computation (PUP, APF, Cards)" },
+  { id: "stg-3", name: "3. CompositeReputationStage", isActive: true, isMandatory: false, rulesCount: 15, responsibility: "7-phase reputation pipeline" },
+  { id: "stg-4", name: "4. ApplyAllowanceStage", isActive: true, isMandatory: false, rulesCount: 10, responsibility: "PLH parsing, INDIVIDUAL-only" },
+  { id: "stg-5", name: "5. CrossBorderStage", isActive: true, isMandatory: false, rulesCount: 11, responsibility: "Country comparison, PV-to-rating" },
+  { id: "stg-6", name: "6. ConvertPointValueStage", isActive: true, isMandatory: false, rulesCount: 21, responsibility: "Field-to-point-value lookups" },
+  { id: "stg-7", name: "7. DefaultPointValueStage", isActive: true, isMandatory: false, rulesCount: 12, responsibility: "Category-specific defaults" },
+  { id: "stg-8", name: "8. ApplyRiskModelStage", isActive: true, isMandatory: true, rulesCount: 7, responsibility: "5 risk models via Strategy pattern" },
+  { id: "stg-9", name: "9. ModelRatingStage", isActive: true, isMandatory: false, rulesCount: 24, responsibility: "Score-to-rating + 18 override chain" }
 ];
 
 // Initial Rule Activations grouped by stages
 export const initialRuleActivations: RuleActivation[] = [
-  // Stage 1: Identity Checks
-  { id: "ID-001", name: "Syntax Regex Validation", type: "JSON", isActive: true, stageId: "stg-1" },
-  { id: "ID-002", name: "Duplicate Email Check", type: "DB", isActive: true, stageId: "stg-1" },
+  // Stage 1: InitialSetupStage
+  { id: "SET-01", name: "Input Parameter Normalization", type: "JSON", isActive: true, stageId: "stg-1" },
+  { id: "SET-02", name: "Field Initialization Check", type: "JSON", isActive: true, stageId: "stg-1" },
+
+  // Stage 2: HracIndicatorStage
+  { id: "HRC-01", name: "HRAC PUP Computation Check", type: "DB", isActive: true, stageId: "stg-2" },
+  { id: "HRC-02", name: "Card Volume Exceeds Limit", type: "API", isActive: true, stageId: "stg-2" },
+
+  // Stage 3: CompositeReputationStage
+  { id: "REP-01", name: "7-Phase Reputation Aggregation", type: "AI", isActive: true, stageId: "stg-3" },
   
-  // Stage 3: Biometric Match
-  { id: "BIO-01", name: "Facial Liveness Detection", type: "AI", isActive: true, stageId: "stg-3" },
-  { id: "BIO-02", name: "Template Signature Analysis", type: "AI", isActive: false, stageId: "stg-3" },
+  // Stage 4: ApplyAllowanceStage
+  { id: "ALW-01", name: "PLH Parsing Rule", type: "JSON", isActive: true, stageId: "stg-4" },
+
+  // Stage 5: CrossBorderStage
+  { id: "XB-01", name: "Country Discrepancy Matching", type: "API", isActive: true, stageId: "stg-5" },
   
-  // Stage 4: Sanction Screening
-  { id: "SANC-01", name: "OFAC SDN Match", type: "API", isActive: true, stageId: "stg-4" },
-  { id: "SANC-02", name: "EU Consolidated List Check", type: "API", isActive: true, stageId: "stg-4" },
-  { id: "SANC-03", name: "Interpol Notice Verification", type: "API", isActive: false, stageId: "stg-4" },
-  
-  // Stage 7: Geolocation Risk
-  { id: "GEO-01", name: "Russia Ingress Check", type: "API", isActive: true, stageId: "stg-7" },
-  { id: "GEO-02", name: "Sanctioned Countries Inbound", type: "JSON", isActive: true, stageId: "stg-7" }
+  // Stage 6: ConvertPointValueStage
+  { id: "PV-01", name: "Field-to-Point Lookup Conversion", type: "DB", isActive: true, stageId: "stg-6" },
+
+  // Stage 7: DefaultPointValueStage
+  { id: "DEF-01", name: "Category Default Rule Assignment", type: "JSON", isActive: true, stageId: "stg-7" },
+
+  // Stage 8: ApplyRiskModelStage
+  { id: "RSK-01", name: "Strategy Risk Model Evaluation", type: "AI", isActive: true, stageId: "stg-8" },
+
+  // Stage 9: ModelRatingStage
+  { id: "RTG-01", name: "Override Chain Resolver", type: "AI", isActive: true, stageId: "stg-9" }
 ];

@@ -195,10 +195,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const timestamp = new Date().toISOString();
     let stageName = "";
     let isNowActive = false;
+    let isMandatory = false;
 
     setStages((prevStages) =>
       prevStages.map((s) => {
         if (s.id === stageId) {
+          if (s.isMandatory) {
+            isMandatory = true;
+            return s;
+          }
           stageName = s.name;
           isNowActive = !s.isActive;
           return { ...s, isActive: isNowActive };
@@ -206,6 +211,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         return s;
       })
     );
+
+    if (isMandatory) return;
 
     const newLog: AppAuditLog = {
       id: `LOG-${Date.now()}`,

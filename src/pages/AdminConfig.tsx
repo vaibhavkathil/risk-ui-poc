@@ -56,64 +56,82 @@ export const AdminConfig: React.FC = () => {
             </p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
-              {stages.map((stage) => (
-                <div 
-                  key={stage.id}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    padding: '0.75rem 1rem',
-                    backgroundColor: selectedStageId === stage.id ? 'var(--bg-tertiary)' : 'rgba(255, 255, 255, 0.01)',
-                    border: '1px solid',
-                    borderColor: selectedStageId === stage.id ? 'var(--color-brand)' : 'var(--border-color)',
-                    borderRadius: '8px',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s ease',
-                  }}
-                  onClick={() => setSelectedStageId(stage.id)}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                    {/* Custom Checkbox */}
-                    <input 
-                      type="checkbox" 
-                      checked={stage.isActive}
-                      onChange={(e) => {
-                        e.stopPropagation();
-                        toggleStage(stage.id);
-                      }}
-                      style={{ 
-                        cursor: 'pointer',
-                        width: '16px',
-                        height: '16px',
-                        accentColor: 'var(--color-brand)'
-                      }}
-                    />
-                    <span style={{ 
-                      fontSize: '0.875rem', 
-                      fontWeight: 600,
-                      color: stage.isActive ? 'var(--text-primary)' : 'var(--text-muted)',
-                      textDecoration: stage.isActive ? 'none' : 'line-through'
-                    }}>
-                      {stage.name}
-                    </span>
-                  </div>
+               {stages.map((stage) => (
+                 <div 
+                   key={stage.id}
+                   style={{
+                     display: 'flex',
+                     alignItems: 'center',
+                     justifyContent: 'space-between',
+                     padding: '0.75rem 1rem',
+                     backgroundColor: selectedStageId === stage.id ? 'var(--bg-tertiary)' : 'rgba(255, 255, 255, 0.01)',
+                     border: '1px solid',
+                     borderColor: selectedStageId === stage.id ? 'var(--color-brand)' : 'var(--border-color)',
+                     borderRadius: '8px',
+                     cursor: 'pointer',
+                     transition: 'all 0.2s ease',
+                   }}
+                   onClick={() => setSelectedStageId(stage.id)}
+                 >
+                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                     {/* Custom Checkbox */}
+                     <input 
+                       type="checkbox" 
+                       checked={stage.isActive}
+                       disabled={stage.isMandatory}
+                       onChange={(e) => {
+                         e.stopPropagation();
+                         if (!stage.isMandatory) toggleStage(stage.id);
+                       }}
+                       style={{ 
+                         cursor: stage.isMandatory ? 'not-allowed' : 'pointer',
+                         width: '16px',
+                         height: '16px',
+                         accentColor: 'var(--color-brand)'
+                       }}
+                     />
+                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
+                       <span style={{ 
+                         fontSize: '0.875rem', 
+                         fontWeight: 600,
+                         color: stage.isActive ? 'var(--text-primary)' : 'var(--text-muted)',
+                         textDecoration: stage.isActive ? 'none' : 'line-through'
+                       }}>
+                         {stage.name}
+                       </span>
+                       <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 400 }}>
+                         {stage.rulesCount} Rules • {stage.responsibility}
+                       </span>
+                     </div>
+                   </div>
 
-                  <span style={{
-                    fontSize: '0.7rem',
-                    padding: '0.15rem 0.45rem',
-                    borderRadius: '4px',
-                    fontWeight: 700,
-                    backgroundColor: stage.isActive ? 'var(--color-success-bg)' : 'var(--bg-tertiary)',
-                    color: stage.isActive ? 'var(--color-success)' : 'var(--text-muted)',
-                    border: '1px solid',
-                    borderColor: stage.isActive ? 'var(--color-success-border)' : 'var(--border-color)',
-                  }}>
-                    {stage.isActive ? 'ENABLED' : 'BYPASSED'}
-                  </span>
-                </div>
-              ))}
-            </div>
+                   <span style={{
+                     fontSize: '0.7rem',
+                     padding: '0.15rem 0.45rem',
+                     borderRadius: '4px',
+                     fontWeight: 700,
+                     backgroundColor: stage.isMandatory 
+                       ? 'var(--color-brand-glow)' 
+                       : stage.isActive 
+                         ? 'var(--color-success-bg)' 
+                         : 'var(--bg-tertiary)',
+                     color: stage.isMandatory 
+                       ? 'var(--color-brand)' 
+                       : stage.isActive 
+                         ? 'var(--color-success)' 
+                         : 'var(--text-muted)',
+                     border: '1px solid',
+                     borderColor: stage.isMandatory 
+                       ? 'rgba(139, 92, 246, 0.25)' 
+                       : stage.isActive 
+                         ? 'var(--color-success-border)' 
+                         : 'var(--border-color)',
+                   }}>
+                     {stage.isMandatory ? 'MANDATORY' : stage.isActive ? 'ENABLED' : 'BYPASSED'}
+                   </span>
+                 </div>
+               ))}
+             </div>
           </div>
 
           {/* Quick Stats Panel */}
