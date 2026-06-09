@@ -13,8 +13,6 @@ import {
   Activity, 
   Server, 
   Briefcase, 
-  Play, 
-  RefreshCw,
   Settings
 } from 'lucide-react';
 
@@ -282,18 +280,7 @@ export const Architecture: React.FC = () => {
     }
   }, [simLogs]);
 
-  const startSimulation = () => {
-    setIsSimulating(true);
-    setSimulationStep(-1);
-    setSimLogs([`[${new Date().toLocaleTimeString('en-US', { hour12: false })}] 🚀 Starting system ingestion run for payload T-9034-A...`]);
-  };
 
-  const resetSimulation = () => {
-    setIsSimulating(false);
-    setSimulationStep(-1);
-    setSimLogs([]);
-    setSelectedNodeId('orchestrator');
-  };
 
   const getNodeStatus = (nodeId: string) => {
     if (isSimulating) {
@@ -489,28 +476,9 @@ export const Architecture: React.FC = () => {
       <div className="page-header" style={{ marginBottom: 0 }}>
         <div>
           <h1 style={{ fontSize: '2rem', fontWeight: 700, margin: 0, letterSpacing: '-0.5px' }}>KYC Agent Architecture</h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginTop: '0.35rem' }}>
-            Agentic AI architecture overview. Ingest payload and trace routing decisions between specialized compliance agents.
-          </p>
+
         </div>
-        <div style={{ display: 'flex', gap: '0.75rem' }}>
-          <button 
-            className="btn btn-primary" 
-            onClick={startSimulation}
-            disabled={isSimulating}
-            style={{ opacity: isSimulating ? 0.7 : 1 }}
-          >
-            <Play size={16} /> Trigger Ingestion Simulation
-          </button>
-          <button 
-            className="btn btn-secondary" 
-            onClick={resetSimulation}
-            style={{ padding: '0.65rem' }}
-            title="Reset Diagram"
-          >
-            <RefreshCw size={16} />
-          </button>
-        </div>
+        {/* Simulation triggers removed */}
       </div>
 
       {/* Main Diagram Area */}
