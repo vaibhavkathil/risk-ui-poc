@@ -5,7 +5,6 @@ import {
   ShieldCheck, 
   HardDrive, 
   Terminal, 
-  Search, 
   Database, 
   Sliders, 
   Lock, 
@@ -85,7 +84,7 @@ export const Architecture: React.FC = () => {
       name: 'LLM Gateway',
       category: 'gateway',
       icon: <Globe size={18} />,
-      shortDesc: 'Unified LLM routing & fallback.',
+      shortDesc: 'Arc Eco System',
       description: 'High-availability router providing model proxying, token usage tracking, and automatic failover. Dynamic selection between Gemini, Claude, and Llama based on prompt complexity.',
       prompt: 'Route system queries to the optimal LLM based on latency requirements and text complexity constraints. Enforce API key rotation, load balance traffic, and fallback to secondary providers upon error.',
       tools: ['proxyRequest()', 'selectOptimalModel()', 'trackTokenUsage()', 'triggerProviderFailover()'],
@@ -97,7 +96,7 @@ export const Architecture: React.FC = () => {
       name: 'Knowledge Base / RAG',
       category: 'memory',
       icon: <BookOpen size={18} />,
-      shortDesc: 'Compliance guidelines & policy vectors.',
+      shortDesc: 'Knowledge (RAG)',
       description: 'Semantic document retrieval engine hosting regulatory update docs, tax treaties, OFAC handbook guides, and internal KYC operating manuals.',
       prompt: 'Perform semantic search using vector embeddings to extract relevant policy clauses, regulatory compliance guidelines, or tax exemption rule exceptions for a designated jurisdiction.',
       tools: ['queryVectorDB()', 'retrievePolicyContext()', 'generateTextEmbeddings()', 'cacheRegulatoryManuals()'],
@@ -489,7 +488,7 @@ export const Architecture: React.FC = () => {
       {/* Header */}
       <div className="page-header" style={{ marginBottom: 0 }}>
         <div>
-          <h1 style={{ fontSize: '2rem', fontWeight: 700, margin: 0, letterSpacing: '-0.5px' }}>KYC System Architecture</h1>
+          <h1 style={{ fontSize: '2rem', fontWeight: 700, margin: 0, letterSpacing: '-0.5px' }}>KYC Agent Architecture</h1>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginTop: '0.35rem' }}>
             Agentic AI architecture overview. Ingest payload and trace routing decisions between specialized compliance agents.
           </p>
@@ -704,7 +703,7 @@ export const Architecture: React.FC = () => {
                   <Cpu size={24} />
                 </div>
                 <div>
-                  <h3 style={{ fontSize: '1.05rem', fontWeight: 700, margin: 0, color: 'white' }}>Routing & Orchestration</h3>
+                  <h3 style={{ fontSize: '1.05rem', fontWeight: 700, margin: 0, color: 'white' }}>Routing & Orchestration Agent</h3>
                   <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', margin: '0.25rem 0 0 0' }}>Central Swarm Coordinator</p>
                 </div>
               </div>
@@ -805,7 +804,7 @@ export const Architecture: React.FC = () => {
               </div>
               <div>
                 <h3 style={{ fontSize: '0.95rem', fontWeight: 600, margin: 0 }}>LLM Gateway</h3>
-                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Proxy, usage limit & fallback</span>
+                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Arc Eco System</span>
               </div>
             </div>
             {isSimulating && simulationStep === 1 && (
@@ -835,7 +834,6 @@ export const Architecture: React.FC = () => {
               </div>
               <div>
                 <h3 style={{ fontSize: '0.95rem', fontWeight: 600, margin: 0 }}>Knowledge (RAG)</h3>
-                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Vector policy compliance db</span>
               </div>
             </div>
             {isSimulating && simulationStep === 3 && (
@@ -875,19 +873,19 @@ export const Architecture: React.FC = () => {
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', width: '100%' }}>
           <div style={{ flex: '1', minWidth: '180px', display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(255, 255, 255, 0.02)', padding: '0.65rem 1rem', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
             <ShieldCheck size={16} style={{ color: 'var(--color-info)' }} />
-            <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>KYC Registry API</span>
+            <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>KYC Platform API/MCP</span>
           </div>
           <div style={{ flex: '1', minWidth: '180px', display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(255, 255, 255, 0.02)', padding: '0.65rem 1rem', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
-            <Search size={16} style={{ color: 'var(--color-warning)' }} />
-            <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>OFAC/Sanctions API</span>
+            <Cpu size={16} style={{ color: 'var(--color-warning)' }} />
+            <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>Risk Engine API/MCP</span>
           </div>
           <div style={{ flex: '1', minWidth: '180px', display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(255, 255, 255, 0.02)', padding: '0.65rem 1rem', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
-            <Sliders size={16} style={{ color: 'var(--color-brand)' }} />
-            <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>Transaction Ledger API</span>
+            <Database size={16} style={{ color: 'var(--color-brand)' }} />
+            <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>Transaction DB</span>
           </div>
           <div style={{ flex: '1', minWidth: '180px', display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(255, 255, 255, 0.02)', padding: '0.65rem 1rem', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
             <Database size={16} style={{ color: 'var(--color-success)' }} />
-            <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>Compliance Audit DB</span>
+            <span style={{ fontSize: '0.8rem', fontWeight: 600 }}>Audit DB</span>
           </div>
         </div>
       </div>

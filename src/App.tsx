@@ -11,6 +11,8 @@ import { AdminConfig } from './pages/AdminConfig';
 import { RecordDetail } from './pages/RecordDetail';
 import { AuditLogs } from './pages/AuditLogs';
 import { Architecture } from './pages/Architecture';
+import { RolloutThoughts } from './pages/RolloutThoughts';
+
 import { 
   LayoutDashboard, 
   Settings,
@@ -186,6 +188,17 @@ function AppContent() {
               <Cpu size={18} />
               <span>AI Agent Network</span>
             </NavLink>
+
+            {/*
+            <NavLink 
+              to="/rollout-thoughts" 
+              className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <Rocket size={18} />
+              <span>Rollout Thoughts</span>
+            </NavLink>
+            */}
           </nav>
 
           <div className="sidebar-footer" style={{ marginTop: '2rem' }}>
@@ -213,6 +226,7 @@ function AppContent() {
             <Route path="/analysis" element={<RiskAnalysis />} />
             <Route path="/debug/:id" element={<DebugDetail />} />
             <Route path="/architecture" element={<Architecture />} />
+            <Route path="/rollout-thoughts" element={<RolloutThoughts />} />
 
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
