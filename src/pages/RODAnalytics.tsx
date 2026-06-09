@@ -130,19 +130,21 @@ export const RODAnalytics: React.FC = () => {
           <div style={{ position: 'absolute', left: 0, right: 0, top: '75%', borderTop: '1px dashed rgba(255,255,255,0.03)' }} />
 
           {runsOverTime.map((item, idx) => {
-            const barHeight = (item.value / maxRunsValue) * 100;
+            const barHeight = Math.round((item.value / maxRunsValue) * 140);
             return (
               <div key={idx} style={{
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
+                justifyContent: 'flex-end',
                 flex: 1,
+                height: '100%',
                 zIndex: 2
               }}>
                 <div 
                   style={{
                     width: '60%',
-                    height: `${barHeight}%`,
+                    height: `${barHeight}px`,
                     background: 'linear-gradient(to top, rgba(139, 92, 246, 0.3) 0%, #60a5fa 100%)',
                     borderRadius: '4px 4px 0 0',
                     transition: 'all 0.3s ease',
